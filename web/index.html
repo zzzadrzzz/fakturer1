@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+    </head>
+
+    <body>
+        <script src="libs/jquery.js"></script>
+
+        <h3>Bą żur</h3>
+        <div>
+            <input id="stringDoOdwrocenia" type="text" style="width:100px">
+            <button onclick="odwrocString()">Odwróć string</button>
+            <input id="odwroconyString" type="text" style="width:100px" readonly>
+            <br>
+            <br>
+            <br>
+            <span>
+                <input id="liczbaX" type="text" style="width:100px">
+                +
+                <input id="liczbaY" type="text" style="width:100px">
+            </span>
+            <br>
+            <button onclick="dodajWartosci()">Dodaj wartości</button>
+            <br>
+            Wynik: <input id="wynik" type="text" style="width:100px" readonly>
+            Wiadomomść: <input id="wiadomosc" type="text" style="width:100px" readonly>
+
+        </div>
+        <script>
+            var host = 'http://localhost:8080';
+
+            function odwrocString() {
+                var xmlHttp = new XMLHttpRequest();
+                var url = host + '/api/odwrocString';
+                var params = '?stringDoOdwrocenia=' + document.getElementById('stringDoOdwrocenia').value;
+                xmlHttp.open('GET', url + params, false);
+                console.log('Request');
+                console.log(url + params);
+                console.log('stringDoOdwrocenia: ' + document.getElementById('stringDoOdwrocenia').value);
+                xmlHttp.send(null);
+                document.getElementById('odwroconyString').value = xmlHttp.responseText;
+            }
+
+            function dodajWartosci() {
+                var xmlHttp = new XMLHttpRequest();
+                var url = host + '/api/dodajWartosci';
+                xmlHttp.open('POST', url, false);
+                xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                var postData = {
+                    x: parseInt(document.getElementById('liczbaX').value),
+                    y: parseInt(document.getElementById('liczbaY').value)
+                };
+                console.log('Request');
+                console.log(url);
+                console.log(JSON.stringify(postData, null, 2));
+                xmlHttp.send(JSON.stringify(postData));
+                console.log('Response');
+                console.log(JSON.stringify(xmlHttp.response, null, 2));
+                var response = JSON.parse(xmlHttp.response);
+                document.getElementById('wynik').value = response.wynik;
+                document.getElementById('wiadomosc').value = response.wiadomosc;
+            }
+
+            function dodajZKonsoli(x, y) {
+                var result = x + y;
+                return result;
+            }
+        </script>
+    </body>
+</html>
