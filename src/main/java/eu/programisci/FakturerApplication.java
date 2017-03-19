@@ -8,5 +8,6 @@ public class FakturerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(FakturerApplication.class, args);
+
 	}
 }
