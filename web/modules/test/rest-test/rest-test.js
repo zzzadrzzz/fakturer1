@@ -10,7 +10,7 @@ function dodajWartosci() {
         x: parseInt(document.getElementById('liczbaX').value),
         y: parseInt(document.getElementById('liczbaY').value)
     };
-    var response = httpPost(url, postData)
+    var response = JSON.parse(httpPost(url, postData));
     document.getElementById('wynik').value = response.wynik;
     document.getElementById('wiadomosc').value = response.wiadomosc;
 }

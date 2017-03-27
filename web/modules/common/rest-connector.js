@@ -3,7 +3,7 @@ function httpGet(fullRequestPathWithParams) {
     console.info('GET ' + fullRequestPathWithParams);
     xmlHttp.open('GET', fullRequestPathWithParams, false);
     xmlHttp.send(null);
-    return xmlHttp.responseText;
+    return xmlHttp.response;
 }
 
 function httpPost(fullRequestPath, postData) {
@@ -12,5 +12,5 @@ function httpPost(fullRequestPath, postData) {
     xmlHttp.open('POST', fullRequestPath, false);
     xmlHttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xmlHttp.send(JSON.stringify(postData));
-    return JSON.parse(xmlHttp.response);
+    return xmlHttp.response;
 }
