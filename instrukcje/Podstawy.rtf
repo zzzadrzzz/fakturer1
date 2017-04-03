@@ -1,0 +1,121 @@
+{\rtf1\ansi\ansicpg1250\deff0\deflang1045{\fonttbl{\f0\fnil\fcharset0 Calibri;}{\f1\fnil\fcharset238 Calibri;}{\f2\fnil Calibri;}}
+{\colortbl ;\red128\green128\blue0;\red0\green0\blue0;\red0\green128\blue0;\red0\green0\blue255;\red102\green14\blue122;\red0\green0\blue128;\red255\green255\blue255;}
+{\*\generator Msftedit 5.41.21.2510;}\viewkind4\uc1\pard\sl240\slmult1\lang1033\b\f0\fs22 0. Wst\lang1045\f1\'eap\par
+0.1. Struktura projektu\b0\par
+\par
+Szablon - <nazwa warstwy> - <opis warstwy> [zastosowane technologie] (przyk\'b3adowe pliki)\par
+\par
+--- FRONT END ---\par
+- widok - pliki .html zawieraj\'b9ce interfejs graficzny [HTML] (testUser.html)\par
+- kontroler widoku - pliki .js z funkcjami s\'b3u\'bf\'b9cymi do pobierania/umieszczania komponent\'f3w i danych z/na widoku oraz manipulacji widokiem [JS i jQuery] (testUser.js g\'f3rna cz\'ea\'9c\'e6, jquery-services.js)\par
+- komunikacja - pliki .js z funkcjami s\'b3u\'bf\'b9cymi do poobierania/wys\'b3ania danych z/do serwera [JS, HTTP] (testUser.js dolna cz\'ea\'9c\'e6, rest-connector.js)\par
+--- BACK END ---\par
+- kontroler rest - klasy *RestController.java zawieraj\'b9ce konfiguracje i funkcje wystawione przez aplikacj\'ea na zewn\'b9trz oraz ich mapowania [Java, REST, Spring] (CrudRestController.java)\par
+- model danych - klasy *DTO.java - zawieraj\'b9 model danych s\'b3u\'bf\'b9cy do komunikacji wewn\'b9trz i na zewn\'b9trz aplikacji [Java] (UserDTO.java, UserForTableDTO.java)\par
+- serwisy - klasy *ServiceImpl.java (wraz z interfejsami), klasy narz\'eadziowe oraz konwertery - zawiera wi\'eakszo\'9c\'e6 biznesu aplikacji [Java, Spring] (UserServiceImpl.java, IUserService.java, UserCoverter.java)\par
+- repozytoria - klasy *Repository.java zawieraj\'b9ce interfejs bazy danych oraz szablony zapyta\'f1 bazodanowych w j\'eazyku JPQL [Java, Spring, JPA] (IuserRepository.java)\par
+- model bazodanowy - model s\'b3u\'bf\'b9cy do komunikacji pomi\'eadzy aplikacj\'b9 i baz\'b9 danych [Java, JPA] (UserOB.java)\par
+- baza danych - sk\'b3ad danych (SQL)\par
+\par
+\par
+\par
+\b 1. Tworzenie modelu\b0\par
+W tym kroku nale\'bfy przemy\'9cle\'e6 jakie dane musz\'b9 by\'e6 przechowywane w bazie oraz jakie zestawy danych powinny opuszcza\'e6 backend.\par
+\par
+\b 1.1. Model bazodanowy\b0\par
+W pakiecie "ob" znajduje si\'ea klasa UserOB. Jest to klasa mapuj\'b9ca, dzi\'eaki kt\'f3rej JPA rozumie jak zapisa\'e6/odczyta\'e6 obiekt POJO do/z bazy danych.\par
+Aby klasa sta\'b3a si\'ea tak\'b9 encj\'b9 wymaga kilku adnotacji:\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1\tab - \cf1\f2 @Entity\f1  \cf0 - sygnalizuje \'bfe klasa jest encj\'b9\par
+\tab - \cf1\f2 @Table\cf2 (name = \cf3\b "test_users"\cf2\b0 )\cf0\f1  - definiuje w jakiej tabeli rekordy tego typu powinny si\'ea znale\'9f\'e6\par
+\tab - \cf1\f2 @SequenceGenerator\cf2 (allocationSize = \cf4 1\cf2 , name = \cf3\b "SEKWENCJA"\cf2\b0 , sequenceName = \cf3\b "gen_test_users_id"\cf2\b0 )\cf0\f1 - definiuje generator sekwencji (u\'bfywany w polu \cf1\f2 @Id\cf0\f1 )\par
+\pard\sl240\slmult1\par
+Klasa reprezentuje tabel\'ea w bazie danych, jej pola za\'9c reprezentuj\'b9 kolumny i te\'bf wymagaj\'b9 pewnych adnotacji:\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1 - jedno pole w klasie musi sta\'e6 si\'ea kluczem g\'b3\'f3wnym, dzieje si\'ea to przez dodanie adnotacji \cf1\f2 @Id\cf0\f1  nad deklaracj\'b9 pola, kt\'f3re reprezentuje klucz g\'b3\'f3wny.\par
+- je\'bfeli pole ma ko\'bfysta\'e6 z sekwencji bazodanowej mo\'bfna u\'bfy\'e6 adnotacji \cf1\f2 @GeneratedValue\cf2 (strategy = GenerationType.\cf5\b\i SEQUENCE\cf2\b0\i0 , generator = \cf3\b "SEKWENCJA"\cf2\b0 )\f1  \cf0 (korzysta z konfiguracji w adnotacjach nad klas\'b9)\par
+- adnotacje \cf1\f2 @Column\f1  \cf0 definiuj\'b9 kolumny, w kt\'f3rych powinny si\'ea znale\'9f\'e6 dane z poszczeg\'f3lnych p\'f3l\par
+- adnotacje dotycz\'b9ce relacji bazodanowych - o tym innym razem\par
+\pard\sl240\slmult1\par
+\b 1.2. Model danych\b0\par
+W pakiecie "dto" znajduj\'b9 si\'ea 2 klasy:\par
+- UserDTO - jest wiernym odwzorowaniem klasy UserOB\par
+- UserForTableDTO - jest specyficzn\'b9 klas\'b9, zawieraj\'b9c\'b9 tylko wymagane biznesowo pola z klasy UserOB\par
+\par
+\b 1.3. Zasady\b0\par
+Idea jest taka, \'bfe klasy OB s\'b3u\'bf\'b9 tylko i wy\'b3\'b9cznie do komunikacji z baz\'b9 danych i pomi\'eadzy serwisami. Po pobraniu rekord\'f3w z bazy powinna nast\'b9pi\'e6 niezw\'b3oczna konwersja do klasy DTO. Innymi s\'b3owy klasy OB nie powinny wychodzi\'e6 powy\'bfej  warstw\'ea serwis\'f3.\par
+Ponadto z aplikacji (poprzez RESTy) nie powinno wydostawa\'e6 si\'ea wi\'eacej danych ni\'bf biznes aplikacji wymaga.\par
+\par
+\par
+\b 2. Repozytoria\b0\par
+W tym kroku warto przemy\'9cle\'e6 jakie zapytania do bazy danych b\'ead\'b9 potrzebne, mo\'bfna jednak zostawi\'e6 to na dalsze etapy.\par
+\par
+Dla ka\'bfdej encji w aplikacji powinno powsta\'e6 co najmniej jedno repozytorium.\par
+Podstawowe repozytorium JpaRepository zawiera w sobie metody do pobierania pojedynczych rekord\'f3w po ID, pobierania wszystkich rekord\'f3w, usuwania, oraz zapisu (tworzenie i update) - uzyskujemy dost\'eap do tych metod poprzez dziedziczenie.\par
+Ponadto istnieje mo\'bfliwo\'9c\'e6 tworzenia w\'b3asnych zapyta\'f1 do bazy w j\'eazyku JPQL, u\'bfywaj\'b9c SpringData (poprzez nazwy metod) lub poprzez mechanizmy typu CriteriaBuilder.\par
+Mo\'bfliwe te\'bf jest tworzenie zapyta\'f1 w natywnym SQL, lecz powinno si\'ea to robi\'e6 tylko je\'bfeli s\'b9 ku temu dobre powody.\par
+\par
+Repozytorium musi implementowa\'e6/rozszerza\'e6 interfejs JpaRepository<KLASA_ENCJI, TYP_ID_ENCJI> oraz posiada\'e6 adnotacj\'ea @Repository .\par
+\par
+\par
+\b 3. Rest API\b0\par
+Kolejnym krokiem powinno by\'e6 okre\'9clenie biznesu aplikacji. Wymagana jest tutaj wiedza biznesowa na temat potrzeb API aplikacji, czyli jakie dane musz\'b9 by\'e6 wysy\'b3ane na front-end, jakie dane mog\'b9 z front-endu przyj\'9c\'e6.\par
+\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1\cf2 Nad klas\'b9 powinny pojawi\'e6 si\'ea nast\'eapuj\'b9ce adnotacjie:\lang1033\f0\line\cf1\f2 @RestController\lang1045\f1  \cf0 - sygnalizuje, \'bfe klasa jest kontrolerem REST\cf1\lang1033\f2\line @RequestMapping\cf2 (value = \cf3\b "/api/user"\cf2\b0 )\cf0\lang1045\f1 - okre\'9cla wsp\'f3lny pocz\'b9tek URL dla wszystkich metod w kotrolerze\cf1\lang1033\f2\line @CrossOrigin\lang1045\f1 ... - \cf0 tylko na potrzeby obecnej aplikacji\cf1\lang1033\f2\line\par
+\cf0\lang1045\f1 Nad metodami klasy, kt\'f3re powinny sta\'e6 si\'ea punktami dost\'eapu do aplikacji nale\'bfy doda\'e6 nast\'eapuj\'b9c\'b9 adnotacj\'ea:\cf1\lang1033\f2\par
+@RequestMapping\cf2 (value = \cf3\b "/save"\cf2\b0 , method = RequestMethod.\cf5\b\i POST\cf2\b0\i0 ,consumes = MediaType.\cf5\b\i APPLICATION_JSON_UTF8_VALUE\cf2\b0\i0 , produces = MediaType.\cf5\b\i APPLICATION_JSON_UTF8_VALUE\cf2\b0\i0 )\par
+\cf0\lang1045\f1 Okre\'9cla ona:\par
+- value - dalsza cz\'ea\'9c\'e6 URL specyficzna dla metody\cf2\lang1033\f2\par
+\pard\sl240\slmult1\cf0\lang1045\f1 - method - definicja typu metody HTTP\par
+- consumes - typ danych wej\'9cciowych do metody\par
+- produces - typ danych zwracanych z metody\par
+\par
+Sygnatura metody r\'f3\'bfni si\'ea od podstawowej sygnatury definicj\'b9 parametr\'f3w:\par
+- w przypadku pojedynczych parametr\'f3w prostych (metody GET) stosuje si\'ea nad parametrem adnotacj\'ea:\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1\cf1\f2 @RequestParam\cf2 (\cf3\b "\f1 NAZWA_PARAMETRU\f2 "\cf2\b0 )\f1  - \cf0 spod jakiej nazwy w requescie odczytany zostanie parametr\par
+\cf2 - w przypadku wysy\'b3ania ca\'b3ych obiekt\'f3w (metody POST) stosuje si\'ea nad parametrem adnotacj\'ea: \cf1\f2 @RequestBody\cf2\par
+\pard\sl240\slmult1\cf0\lang1033\f0\par
+\lang1045\f1 Kontrolery rest\'f3w s\'b3u\'bfy\'e6 powinny tylko to odebrania danych, przes\'b3ania ich dalej (do serwis\'f3w), oraz do odpowiedniego przygotowania odpowiedzi.\par
+\par
+\par
+\b 4. Serwisy\par
+\b0 Znaj\'b9c model danych i wymagania biznesowe mo\'bfna przyst\'b9pi\'e6 do implementacji dzia\'b3ania aplikacji.\par
+U\'bfywa si\'ea do tego wszelkiego typu klas serwisowych, np.:\par
+- konwertery - do mapowania obiekt\'f3w mi\'eadzy r\'f3\'bfnymi typami\par
+- klasy narz\'eadziowe - proste, cz\'easto u\'bfywane metody\par
+- serwisy - g\'b3\'f3wne klasy biznesowe\par
+\par
+Serwisy powinny by\'e6 tworzone jako para interfejs + implementacja.\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1 Klasa implementuj\'b9ca (oraz ka\'bfda inna klasa serwisowa) powinna mie\'e6 nad sob\'b9 adnotacj\'ea \cf1\f2 @Service\cf0\f1  - sygnalizuje, \'bfe klasa jest serwisem\cf1\f2\par
+\pard\sl240\slmult1\cf0\f1\par
+Klasy serwisowe s\'b9 centraln\'b9 warstw\'b9 aplikacji, wok\'f3\'b3 kt\'f3rej wszystko si\'ea kr\'eaci.\par
+\par
+\par
+\b 5.Beany i wstrzykiwanie\b0\par
+Kontrolery REST, repozytoria oraz wszystkie klasy serwisowe s\'b9 Beanami - zasobami, kt\'f3rymi dysponuje i zarz\'b9dza aplikacja.\par
+Aby m\'f3c u\'bfy\'e6 beana w innym beanie nale\'bfy go wsrzykn\'b9\'e6.\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1 Mo\'bfna to zrobi\'e6 na kilka sposob\'f3w, najprostszym jest utworzenie w klasie wywo\'b3uj\'b9cej pola (typ interfejsu, je\'bfeli dla beana istnieje interfejs, lub typ klasy je\'bfeli nie istnieje) z adnotacj\'b9 \cf1\f2 @Autowired\par
+\pard\sl240\slmult1\cf0\f1\par
+\pard\box\brdrdash\brdrw0 \cbpat7\sl240\slmult1 Na przyk\'b3ad w klasie UserService.java jest wstrzykni\'eacie:\cf2\line\cf1\f2 @Autowired\line\cf6\b private \cf2\b0 IUserRepository \cf5\b userRepository\cf2\b0 ;\par
+\pard\sl240\slmult1\cf0\f1\par
+pozawala to na korzystanie z userRepository w obr\'eabie klasy.\par
+\lang1033\f0\par
+\par
+\lang1045\b\f1 6. Baza danych\b0\par
+Konfiguracja po\'b3\'b9czenia z baz\'b9 danych znajduje si\'ea w pliku application.properties .\par
+\lang1033\f0\par
+\par
+\par
+\lang1045\b\f1 7. Front-end\par
+\b0 Sam front-end jest zazwyczaj traktowany jako kompletnie oddzielna cz\'ea\'9c\'e6 aplikacji.\par
+W przypadku obecnych zaj\'ea\'e6 szablon front-endu jest w wi\'eakszo\'9cci zrobiony.\par
+Istniej\'b9 klasy narz\'eadziowe do komunikacji z wystawionymi restami oraz klasy wspomagaj\'b9ce przemieszczanie si\'ea mi\'eadzy widokami w pakiecie modules/common.\par
+\par
+W pakiecie modules/test/user znajduje si\'ea przyk\'b3ad ca\'b3ego CRUDa do podstawowego zarz\'b9dzania u\'bfytkownikami, zawieraj\'b9cy wi\'eakszo\'9c\'e6 technik niezb\'eadnych do wytworzenia przez analogi\'ea reszty aplikacji.\par
+\par
+Tworz\'b9c nowe cz\'ea\'9cci aplikacji nale\'bfy:\par
+- utworzy\'e6 nowy pakiet (katalog), w kt\'f3rym cz\'ea\'9c\'e6 aplikacji b\'eadzie umieszczona\par
+- skopiowa\'e6 i dostosowa\'e6 plik testUser.html - dostosowanie oznacza zmian\'ea widocznych komponent\'f3w wedle potrzeb, nadanie unikalnych id wszystkim nowym elementom html, zmian\'ea wywo\'b3ywanych metod.\par
+- skopiowa\'e6 i dostosowa\'e6 plik testUser.js - dostosowanie oznacza zmian\'ea nazw metod oraz p\'f3l na unikalne, dostosowanie metod do biznesu, zmian\'ea wywo\'b3a\'f1 rest na wymagane przez biznes\par
+- doda\'e6 nowe klasy .js do index.html\par
+- dostosowa\'e6 app-submenu.html - do wy\'9cwietlania nowego widoku\lang1033\f0\par
+}
+ 

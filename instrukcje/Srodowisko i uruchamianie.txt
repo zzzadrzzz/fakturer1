@@ -1,0 +1,38 @@
+Wymagania œrodowiskowe do przedmotiu fakultatywnego Programiœci Sp. z o.o.
+1. JRE 8 (najnowsza)
+2. Zmienna œrodowiskowa (systemowa) JAVA_HOME wskazuj¹ca na katalog instalacji JRE (tam gdzie le¿y katalog bin)
+3. Zmienna œrodowiskowa (systemowa) PATH - dopisaæ œcie¿kê do bin w katalogu JAVA_HOME
+4. Maven 3.3.9+
+5. Zmienna œrodowiskowa (systemowa) M2_HOME wskazuj¹ca na katalog instalacji Mavena (tam gdzie le¿y katalog bin)
+6. Zmienna œrodowiskowa (systemowa) PATH - dopisaæ œcie¿kê do bin w katalogu M2_HOME
+7. Posgresql 9.4+
+8. pgAdmin III (najnowszy)
+9. Git (najnowszy)
+10. NodeJS (najnowszy)
+11. Idea IntelliJ Ultimate (licencja studencka) lub Community
+12. Konto GitHub
+
+
+
+Pobieranie:
+W IntelliJ -   VCS -> Checkout from version control -> GitHub
+Autentykacja przez password
+URL: https://github.com/pawel-dubilowicz/fakturer.git
+login i has³o w³asne
+wskazaæ gdzie ma siê zapisaæ
+
+
+Uruchamianie:
+BACKEND:
+Po prawej stronie IntelliJ znajduje siê zak³adka Maven Projects
+W niej interesuj¹ nas 3 konkretne dzia³ania:
+- Lifecycle -> clean - czyœci projekt
+- Lifecycle -> install - buduje projekt i generuje .war
+- Plugins -> spring-boot -> spring-boot:run - uruchamia aplikacjê serwerow¹ pod adresem http://localhost:8080/
+
+FRONTEND:
+W dolnym pasku IntelliJ jest zak³adka Terminal
+W terminalu wpisujemy "cd web"
+Je¿eli jest to pierwsze uruchomienie wpisujemy "npm install connect serve-static"
+Instaluje to potrzebne do dzia³ania biblioteki NodeJS
+Nastêpnie wpisujemy "node server.js" - uruchamiamy w ten sposób aplikacjê webow¹ pod adresem http://localhost:9090/
