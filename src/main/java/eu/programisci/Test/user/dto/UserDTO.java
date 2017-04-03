@@ -1,16 +1,26 @@
-package eu.programisci.Test;
+package eu.programisci.Test.user.dto;
 
 import java.util.Date;
 
-public class UserForTableDTO {
+public class UserDTO {
 
     private Long id;
     private String name;
     private String lastname;
     private String login;
+    private String password;
+    private String email;
     private Date creationDate;
 
-    public UserForTableDTO() {
+    public UserDTO() {
+    }
+
+    public UserDTO(String aName, String aLastname, String aLogin, String aPassword, String aEmail) {
+        name = aName;
+        lastname = aLastname;
+        login = aLogin;
+        password = aPassword;
+        email = aEmail;
     }
 
     public Long getId() {
@@ -43,6 +53,22 @@ public class UserForTableDTO {
 
     public void setLogin(String aLogin) {
         login = aLogin;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String aPassword) {
+        password = aPassword;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String aEmail) {
+        email = aEmail;
     }
 
     public Date getCreationDate() {

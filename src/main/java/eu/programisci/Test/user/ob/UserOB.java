@@ -1,27 +1,37 @@
-package eu.programisci.Test;
+package eu.programisci.Test.user.ob;
 
+import javax.persistence.*;
 import java.util.Date;
 
-public class UserDTO {
+@Entity
+@Table(name = "test_users")
+@SequenceGenerator(allocationSize = 1, name = "SEKWENCJA", sequenceName = "gen_test_users_id")
+public class UserOB {
 
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEKWENCJA")
     private Long id;
-    private String name;
-    private String lastname;
-    private String login;
-    private String password;
-    private String email;
+
+    @Column(name = "creation_date", columnDefinition = "TIMESTAMP")
     private Date creationDate;
 
-    public UserDTO() {
-    }
+    @Column(name = "name")
+    private String name;
 
-    public UserDTO(String aName, String aLastname, String aLogin, String aPassword, String aEmail) {
-        name = aName;
-        lastname = aLastname;
-        login = aLogin;
-        password = aPassword;
-        email = aEmail;
-    }
+    @Column(name = "lastname")
+    private String lastname;
+
+    @Column(name = "login")
+    private String login;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "email")
+    private String email;
+
+
 
     public Long getId() {
         return id;
