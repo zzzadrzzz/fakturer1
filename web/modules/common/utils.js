@@ -11,3 +11,12 @@ function timestampToStringDate(timestamp) {
 function pad2Digits(input) {
     return input < 10 ? '0' + input : input;
 }
+
+function getIndexForSelect(dataArray, dataValue) {
+    for (var i = 0; i < dataArray.length; i++) {
+        if (dataArray[i] == dataValue) {
+            return i + "";
+        }
+    }
+    return "0";
+}

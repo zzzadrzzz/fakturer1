@@ -1,0 +1,67 @@
+ W ramach zajęć i pracy domowej należy skonstruować 2 serwisy CRUDowe.
+ Dla towarów oraz kontrahentów.
+
+ Wymagane RESTy:
+
+     GET /api/kontrahent/findOne
+        in: Long id
+        out: KontrahentDTO
+
+     GET /api/kontrahent/findAll
+        in: void
+        out: KontrahentDTO[]
+
+     GET /api/kontrahent/deleteOne
+        in: Long id
+        out: void
+
+    POST /api/kontrahent/save
+        in: KontrahentDTO
+        out: KontrahentDTO
+
+
+     GET /api/towar/findOne
+        in: Long id
+        out: TowarDTO
+
+     GET /api/towar/findAll
+        in: void
+        out: TowarDTO[]
+
+     GET /api/towar/deleteOne
+        in: Long id
+        out: void
+
+    POST /api/towar/save
+        in: TowarDTO
+        out: TowarDTO
+
+     GET /api/towar/getJednostkiMiary
+        in: void
+        out: EJednostkaMiary[]
+
+
+RESTy korzystają z modelu:
+
+TowarDTO
+	Long id;
+	String nazwa;
+	String pkwiu;
+	EJednostkaMiary jednostkaMiary;
+	Integer vat;
+	Double cenaNetto;
+
+
+KontrahentDTO
+	Long id;
+	String nazwa;
+	String adres;
+	String nip;
+
+
+EJednostkaMiary (to jest enum)
+	SZTUKA, LITR, KILOGRAM, METR_BIEZACY, METR_KWADRATOWY;
+
+
+Klasy OB dla powyższych pól powinny zawierać dodatkowo pola private Date dataUtworzenia;  wypełniane w momencie TWORZENIA NOWEGO OB.
+W przypadku pól dla typów enum w encjach nad odpowiednim polem należy dodać adnotację  @Enumerated(EnumType.STRING)

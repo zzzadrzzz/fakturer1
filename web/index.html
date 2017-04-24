@@ -10,7 +10,8 @@
         <script src="modules/common/jquery-services.js"></script>
         <script src="modules/common/rest-connector.js"></script>
         <script src="modules/test/user/testUser.js"></script>
-        <script src="modules/test/cwiczenie/cwiczenie.js"></script>
+        <script src="modules/app/kontrahent/kontrahent.js"></script>
+        <script src="modules/app/towar/towar.js"></script>
 
         <link rel="stylesheet" href="styles/styles.css" />
     </head>
@@ -19,7 +20,7 @@
         <span id="menu" style="display:inline-flex;width:1000px">
             <div style="padding:5px">
                 <button onclick="switchMenu('modules/app/app-submenu.html');
-                                 switchTab('modules/app/blank.html')">APP</button>
+                                 switchTab('modules/app/kontrahent/kontrahent.html')">APP</button>
             </div>
             <div style="padding:5px">
                 <button onclick="switchMenu('modules/test/test-submenu.html')
@@ -31,8 +32,8 @@
         <div id="content"></div>
 
         <script>
-            switchMenu('modules/test/test-submenu.html');
-            switchTab('modules/test/user/testUser.html');
+            switchMenu('modules/app/app-submenu.html');
+            switchTab('modules/app/kontrahent/kontrahent.html');
         </script>
     </body>
 </html>

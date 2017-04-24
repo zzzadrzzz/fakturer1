@@ -1,0 +1,30 @@
+Wymagania na PLUS - słownik PKWiU:
+
+1. Parsowanie danych z załączonego pliku "/src/main/resources/pkwiu2015.csv" i zasilenie nimi bazy danych (wymagana nowa struktura, repozytorium, etc...)
+
+Parser powinien uruchamiać się w Bootstrapperze.
+Wszystkie towary tworzone w Bootstrapperze powinny posiadać poprawne wartości PKWiU.
+
+Istotne pola do wyparsowania:
+- kolejnosc
+- symbol
+- nazwa
+- numerPoziomu.
+Tylko rekordy z numerem poziomu 2, 4 i 6, pozostałe odrzucamy.
+
+2. Obsługa frontend-backend
+Nie są wymagane żadne zmiany w TowarDTO.
+W przypadku robienia obsługi należy usunąć pliki towar.html i towar.js i zastąpić je plikami towar-plus.html i towar-plus.js.
+
+Do obsługi potrzebny jest następujący REST:
+GET /api/towar//findPKWiU
+	in: String symbol (required = false)
+	out: PKWiUDictDTO[]
+
+REST powinien przyjmować symbol i wyszukiwać w bazie danych rekordy z kolejnym "numerPoziomu" oraz z "symbol" zaczynającym się od code oraz posortować je rosnąco wg "kolejnosc", a nastepnie zwracac wyniki jako listę PKWiUDictDTO.
+
+PKWiUDictDTO:
+	String symbol;
+	String nazwa;
+	int numerPoziomu;
+

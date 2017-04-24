@@ -1,0 +1,31 @@
+<h2>Kontrahenci</h2>
+
+<span>Id: <input id="kontrahent-id" type="text" style="width:50px" readonly></span>
+<br>
+<span>Nazwa: <input id="kontrahent-nazwa" type="text" style="width:200px"></span>
+<br>
+<span>Adres: <input id="kontrahent-adres" type="text" style="width:200px"></span>
+<br>
+<span>NIP: <input id="kontrahent-nip" type="text" style="width:200px"></span>
+
+<br>
+<br>
+
+<button onclick="saveKontrahentForm()">Zapisz</button>&nbsp;&nbsp;&nbsp;
+<button onclick="clearKontrahentForm()">Wyczyść formularz</button>&nbsp;&nbsp;&nbsp;
+<button onclick="deleteSelectedKontrahent()">Usuń</button>
+
+<hr>
+
+<button onclick="getKontrahentDataForTable()">Odśwież</button>
+<br>
+<br>
+
+<table id="kontrahent-table" class="display" width="100%"></table>
+
+
+<script>
+    createKontrahentTable();
+    createKontrahentTableEvents();
+    getKontrahentDataForTable();
+</script>
