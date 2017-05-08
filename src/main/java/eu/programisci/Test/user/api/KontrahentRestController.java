@@ -32,7 +32,6 @@ public class KontrahentRestController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public KontrahentDTO save(@RequestBody KontrahentDTO aUserDTO) {
-        return KontrahentService.save(aUserDTO);
+    public KontrahentDTO save(@RequestBody KontrahentDTO aUserDTO) {return KontrahentService.save(aUserDTO);
     }
 }

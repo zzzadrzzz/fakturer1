@@ -37,4 +37,7 @@ public class TowarRestController {
     public TowarDTO save(@RequestBody TowarDTO aTowarDTO) {
         return TowarService.save(aTowarDTO);
     }
+
+    @RequestMapping(value = "/getJednostkiMiary", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public void getJednostkiMiary() {return TowarService.getJednostkiMiary();}
 }

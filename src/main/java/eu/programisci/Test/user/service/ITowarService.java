@@ -12,4 +12,5 @@ public interface ITowarService {
     List<TowarDTO> findAll();
     void deleteOne(Long id);
     TowarDTO save(TowarDTO towar);
+    EJednostkaMiary[] getJednostkiMiary();
 }
